@@ -1,0 +1,10 @@
+{
+  "jabber" : {
+    "user" : "user_name@goonfleet.com",
+    "password" : "ESA Password"
+  },
+  "slack" : {
+    "channel":"ping",
+    "token":"Slack Token"
+  }
+}

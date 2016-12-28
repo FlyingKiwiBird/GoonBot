@@ -7,7 +7,6 @@ var pass = config.get('jabber.password');
 var host = "conference.goonfleet.com";
 var port = 5222;
 
-var bot = config.get("slack.bot");
 var channel = config.get("slack.channel");
 var token = config.get("slack.token");
 
