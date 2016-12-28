@@ -1,0 +1,11 @@
+{
+  "name": "GoonBot",
+  "version": "0.1",
+  "description": "Forward goon pings to a slack",
+  "main": "main.js",
+  "dependencies": {
+    "config": "^1.2.4",
+    "request": "^2.45.0",
+    "simple-xmpp": "^0.1.92"
+  }
+}
