@@ -23,6 +23,11 @@ xmpp.on('online', function(data) {
     sendToSlack("Online");
 });
 
+xmpp.on('close', function() {
+    console.warn('Disconnected');
+    sendToSlack("Offline");
+});
+
 xmpp.on('chat', function(from, message) {
 
     if(from == "directorbot@goonfleet.com")

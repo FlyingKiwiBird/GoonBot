@@ -2,7 +2,7 @@
   "name": "GoonBot",
   "version": "0.0.1",
   "description": "Forward goon pings to a slack",
-  "main": "main.js",
+  "main": "index.js",
   "dependencies": {
     "config": "^1.24.0",
     "request": "^2.79.0",
