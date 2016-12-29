@@ -97,6 +97,5 @@ process.on ('exit', onClose);
 process.on('SIGHUP', onClose);
 process.on('SIGQUIT', onClose);
 process.on('SIGINT', onClose);
-process.on('SIGKILL', onClose);
 process.on('SIGTERM', onClose);
 process.on('uncaughtException', onClose);
