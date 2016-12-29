@@ -85,6 +85,7 @@ var onClose = function()
     cloasing = true;
     sendToSlack("Offline", all);
   }
+  process.exit(0);
 };
 
 process.on ('exit', onClose);
