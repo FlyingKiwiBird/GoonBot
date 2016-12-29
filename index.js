@@ -80,11 +80,8 @@ xmpp.connect({
 var closing = false;
 var onClose = function()
 {
-  if(!closing)
-  {
-    cloasing = true;
-    sendToSlack("Offline", all);
-  }
+
+  sendToSlack("Offline", all);
   process.exit(0);
 };
 
