@@ -21,12 +21,12 @@ xmpp.on('error', function(err) {
 
 xmpp.on('online', function(data) {
     console.log('Connected: ' + data.jid.user);
-    sendToSlack("Online");
+    sendToSlack("Online", all);
 });
 
 xmpp.on('close', function() {
     console.warn('Disconnected');
-    sendToSlack("Offline");
+    sendToSlack("Offline", all);
 });
 
 xmpp.on('chat', function(from, message) {
@@ -77,10 +77,14 @@ xmpp.connect({
 
 /**************** App Close ***************/
 
-
+var closing = false;
 var onClose = function()
 {
-  sendToSlack("Offline", all);
+  if(!closing)
+  {
+    cloasing = true;
+    sendToSlack("Offline", all);
+  }
 };
 
 process.on ('exit', onClose);
