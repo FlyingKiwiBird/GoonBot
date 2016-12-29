@@ -7,26 +7,29 @@ var pass = config.get('jabber.password');
 var host = "conference.goonfleet.com";
 var port = 5222;
 
+var token = config.get("slack.token");
+
 var all = config.get("slack.channels.all");
 var fleet = config.get("slack.channels.fleets");
-var token = config.get("slack.token");
+var status = config.get("slack.channels.status");
 
 console.log("Connecting to " + host + ":" + port);
 
 
 
 xmpp.on('error', function(err) {
+    sendToSlack("Error: " + err, status);
         console.error(err);
 });
 
 xmpp.on('online', function(data) {
     console.log('Connected: ' + data.jid.user);
-    sendToSlack("Online", all);
+    sendToSlack("Online", status);
 });
 
 xmpp.on('close', function() {
     console.warn('Disconnected');
-    sendToSlack("Offline", all);
+    sendToSlack("Offline", status);
 });
 
 xmpp.on('chat', function(from, message) {
@@ -81,8 +84,13 @@ var closing = false;
 var onClose = function()
 {
 
-  sendToSlack("Offline", all);
-  process.exit(0);
+  sendToSlack("Offline", status);
+
+  setTimeout(function()
+  {
+      process.exit(0);
+  }, 500);
+
 };
 
 process.on ('exit', onClose);

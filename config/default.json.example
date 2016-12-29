@@ -7,7 +7,8 @@
     "channels":
       {
         "all":"ping",
-        "fleets":"fleet"
+        "fleets":"fleet",
+        "status":"botstatus"
         },
     "token":"Slack Token"
   }
