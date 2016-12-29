@@ -4,7 +4,11 @@
     "password" : "ESA Password"
   },
   "slack" : {
-    "channel":"ping",
+    "channels":
+      {
+        "all":"ping",
+        "fleets":"fleet"
+        },
     "token":"Slack Token"
   }
 }

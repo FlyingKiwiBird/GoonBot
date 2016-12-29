@@ -7,7 +7,8 @@ var pass = config.get('jabber.password');
 var host = "conference.goonfleet.com";
 var port = 5222;
 
-var channel = config.get("slack.channel");
+var all = config.get("slack.channels.all");
+var fleet = config.get("slack.channels.fleets");
 var token = config.get("slack.token");
 
 console.log("Connecting to " + host + ":" + port);
@@ -32,13 +33,19 @@ xmpp.on('chat', function(from, message) {
 
     if(from == "directorbot@goonfleet.com")
     {
-      sendToSlack(message);
-      console.log("PING!");
+      sendToSlack(message, all);
+
+      var re = /(skirmishbot|Doctrine:|Location:)/;
+      if(message.match(re))
+      {
+        sendToSlack(message,fleet);
+      }
+
     }
     console.log(from + ": " + message);
 });
 
-function sendToSlack(message)
+function sendToSlack(message, channel)
 {
   var url = "https://slack.com/api/chat.postMessage";
   var args = {
@@ -67,3 +74,15 @@ xmpp.connect({
             host: host,
             port: port
 });
+
+/**************** App Close ***************/
+
+
+var onClose = function()
+{
+  sendToSlack("Offline", all);
+};
+
+process.on ('exit', onClose);
+process.on('SIGINT', onClose);
+process.on('uncaughtException', onClose);
