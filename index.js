@@ -51,7 +51,8 @@ function filterMsg(message)
   for(var i = 0; i < filters.length; i++)
   {
     var f = filters[i];
-    var re = f.filter;
+    var re = new RegExp(f.filter);
+
     if(message.match(re))
     {
       sendToSlack(message, f.channel)

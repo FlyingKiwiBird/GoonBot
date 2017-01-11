@@ -20,6 +20,16 @@
         }
       ]
     },
+    "emoji":
+    [
+      {
+        "from":":pcgaming:",
+        "to":":desktop_computer:"
+      },
+      {
+        
+      }
+    ],
     "token":"Slack Token"
   }
 }
