@@ -12,6 +12,7 @@ var token = config.get("slack.token");
 var all = config.get("slack.channels.all");
 var filters = config.get("slack.channels.filters");
 var status = config.get("slack.channels.status");
+var emojis = config.get("slack.emojis");
 
 console.log("Connecting to " + host + ":" + port);
 
@@ -41,7 +42,10 @@ xmpp.on('chat', function(from, message) {
     {
       sendToSlack(message, all);
       filterMsg(message);
-
+    }
+    else if (from == user) //For testing
+    {
+      sendToSlack(message, status);
     }
     console.log(from + ": " + message);
 });
@@ -60,13 +64,26 @@ function filterMsg(message)
   }
 }
 
+function emoji(message)
+{
+  var msg = message;
+  for(var i = 0; i < emojis.length; i++)
+  {
+    var e = emojis[i];
+    var re = new RegExp(e.from);
+    msg.replace(re, e.to);
+  }
+  return msg;
+}
+
 function sendToSlack(message, channel)
 {
   var url = "https://slack.com/api/chat.postMessage";
+  var msg = emoji(message);
   var args = {
     token: token,
     channel: channel,
-    text: message,
+    text: msg,
     as_user: true
   };
 
@@ -82,6 +99,8 @@ function sendToSlack(message, channel)
   });
 
 }
+
+
 
 
 
