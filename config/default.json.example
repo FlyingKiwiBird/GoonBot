@@ -16,7 +16,7 @@
         },
         {
           "channel":"bombers",
-          "filter":"/broadcast from \S+ to bomberwaffe/"
+          "filter":"/broadcast from \\S+ to bomberwaffe/"
         },
       ]
     },
