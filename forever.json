@@ -1,0 +1,8 @@
+{
+    "uid": "GoonBot",
+    "append": true,
+    "watch": true,
+    "script": "index.js",
+    "sourceDir": "/var/http/goonBot",
+    "killSignal": "SIGTERM"
+}

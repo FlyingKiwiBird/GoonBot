@@ -5,11 +5,21 @@
   },
   "slack" : {
     "channels":
-      {
-        "all":"ping",
-        "fleets":"fleet",
-        "status":"botstatus"
+    {
+      "all":"ping",
+      "status":"botstatus",
+      "filters":
+      [
+        {
+          "channel":"fleet",
+          "filter":"/(skirmishbot|Doctrine:|Location:)/"
         },
+        {
+          "channel":"bombers",
+          "filter":"/broadcast from \S+ to bomberwaffe/"
+        },
+      ]
+    },
     "token":"Slack Token"
   }
 }

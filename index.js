@@ -10,7 +10,7 @@ var port = 5222;
 var token = config.get("slack.token");
 
 var all = config.get("slack.channels.all");
-var fleet = config.get("slack.channels.fleets");
+var filters = config.get("slack.channels.filters");
 var status = config.get("slack.channels.status");
 
 console.log("Connecting to " + host + ":" + port);
@@ -30,23 +30,34 @@ xmpp.on('online', function(data) {
 xmpp.on('close', function() {
     console.warn('Disconnected');
     sendToSlack("Offline", status);
+    //Attempt reconnect
+    connect();
 });
+
 
 xmpp.on('chat', function(from, message) {
 
     if(from == "directorbot@goonfleet.com")
     {
       sendToSlack(message, all);
-
-      var re = /(skirmishbot|Doctrine:|Location:)/;
-      if(message.match(re))
-      {
-        sendToSlack(message,fleet);
-      }
+      filterMsg(message);
 
     }
     console.log(from + ": " + message);
 });
+
+function filterMsg(message)
+{
+  for(var i = 0; i < filters.length; i++)
+  {
+    var f = filters[i];
+    var re = f.filter;
+    if(message.match(re))
+    {
+      sendToSlack(message, f.channel)
+    }
+  }
+}
 
 function sendToSlack(message, channel)
 {
@@ -71,18 +82,28 @@ function sendToSlack(message, channel)
 
 }
 
-xmpp.connect({
-            jid: user,
-            password: pass,
-            host: host,
-            port: port
-});
+
+
+function connect()
+{
+  xmpp.connect({
+              jid: user,
+              password: pass,
+              host: host,
+              port: port
+  });
+}
+
+connect();
+
+//Check status
 
 /**************** App Close ***************/
 
 var closing = false;
 var onClose = function()
 {
+  xmpp.disconnect();
 
   sendToSlack("Offline", status);
 
@@ -94,6 +115,7 @@ var onClose = function()
 };
 
 process.on ('exit', onClose);
+process.on ('stop', onClose);
 process.on('SIGHUP', onClose);
 process.on('SIGQUIT', onClose);
 process.on('SIGINT', onClose);
