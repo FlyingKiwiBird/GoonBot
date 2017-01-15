@@ -9,8 +9,8 @@ GoonBot is a Node.js application which forwards Jabber messages from the Goonswa
 2. Create a slack bot
 3. Record the slack bot's API Token
 4. In your slack add a few channels:
-* One to post every message that comes through directorbot
-* One for GoonBot to post in if an error occurs/it goes offline
+    * One to post every message that comes through directorbot
+    * One for GoonBot to post in if an error occurs/it goes offline
 5. Invite the slack bot to all channels that you just created.
 
 ### Part 2: Setup GoonBot
