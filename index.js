@@ -14,7 +14,17 @@ var filters = config.get("slack.channels.filters");
 var status = config.get("slack.channels.status");
 var emojis = config.get("slack.emojis");
 
+
+
+if(config.has("test"))
+{
+  var testMsg = config.get("test");
+  onChat("directorbot@goonfleet.com", testMsg)
+}
+
 console.log("Connecting to " + host + ":" + port);
+
+
 
 
 
@@ -36,19 +46,27 @@ xmpp.on('close', function() {
 });
 
 
-xmpp.on('chat', function(from, message) {
+xmpp.on('chat', function(from, message)
+{
 
-    if(from == "directorbot@goonfleet.com")
-    {
-      sendToSlack(message, all);
-      filterMsg(message);
-    }
-    else if (from == user) //For testing
-    {
-      sendToSlack(message, status);
-    }
-    console.log(from + ": " + message);
+  onChat(from, message);
+
 });
+
+function onChat(from, message)
+{
+  console.log(from + ": " + message);
+
+  if(from == "directorbot@goonfleet.com")
+  {
+    sendToSlack(message, all);
+    filterMsg(message);
+  }
+  else if (from == user) //For testing
+  {
+    sendToSlack(message, status);
+  }
+}
 
 function filterMsg(message)
 {
@@ -70,8 +88,8 @@ function emoji(message)
   for(var i = 0; i < emojis.length; i++)
   {
     var e = emojis[i];
-    var re = new RegExp(e.from);
-    msg.replace(re, e.to);
+    var re = new RegExp(e.from, "g");
+    msg = msg.replace(re, e.to);
   }
   return msg;
 }
@@ -115,6 +133,13 @@ function connect()
 }
 
 connect();
+xmpp.subscribe(user);
+xmpp.on('subscribe', function(from) {
+  console.log("Subscription request:" + from);
+if (from === user) {
+    xmpp.acceptSubscription(from);
+    }
+});
 
 //Check status
 
@@ -123,9 +148,14 @@ connect();
 var closing = false;
 var onClose = function()
 {
+  if(!closing)
+  {
+    sendToSlack("Offline", status);
+  }
+  closing = true;
   xmpp.disconnect();
 
-  sendToSlack("Offline", status);
+
 
   setTimeout(function()
   {

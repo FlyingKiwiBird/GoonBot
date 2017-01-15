@@ -12,11 +12,11 @@
       [
         {
           "channel":"fleet",
-          "filter":"/(skirmishbot|Doctrine:|Location:)/"
+          "filter":"(skirmishbot|Doctrine:|Location:)"
         },
         {
           "channel":"bombers",
-          "filter":"/broadcast from \\S+ to bomberwaffe/"
+          "filter":"broadcast from .+ to bomberwaffe"
         }
       ]
     },
