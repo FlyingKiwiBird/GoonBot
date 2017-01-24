@@ -59,8 +59,13 @@ function onChat(from, message)
 
   if(from == "directorbot@goonfleet.com")
   {
-    sendToSlack(message, all);
-    filterMsg(message);
+
+    var res = filterMsg(message);
+    if(!res)
+    {
+      //Only send to all if it did not already go to a filter
+      sendToSlack(message, all);
+    }
   }
   else if (from == user) //For testing
   {
@@ -70,6 +75,7 @@ function onChat(from, message)
 
 function filterMsg(message)
 {
+  var filtered = false;
   for(var i = 0; i < filters.length; i++)
   {
     var f = filters[i];
@@ -77,9 +83,11 @@ function filterMsg(message)
 
     if(message.match(re))
     {
+      filtered = true;
       sendToSlack(message, f.channel)
     }
   }
+  return filtered;
 }
 
 function emoji(message)
